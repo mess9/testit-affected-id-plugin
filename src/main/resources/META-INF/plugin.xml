@@ -1,15 +1,44 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.mess9.testitaffectedidplugin</id>
-    <name>testit-affected-id-plugin</name>
+    <name>Affected Tests Finder</name>
+    <description>Finds tests affected by changes between current branch and master</description>
     <vendor>mess9</vendor>
-
-    <depends>com.intellij.modules.platform</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java-capable</depends>
+    <depends>com.intellij.java</depends>
+
+
+
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.mess9.testitaffectedidplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.mess9.testitaffectedidplugin.startup.MyProjectActivity" />
+        <toolWindow id="Affected Tests"
+                    icon="AllIcons.General.Modified"
+                    anchor="bottom"
+                    factoryClass="com.github.mess9.testitaffectedidplugin.window.AffectedTestsWindowFactory"/>
+
+        <projectConfigurable parentId="tools"
+                             instance="com.github.mess9.testitaffectedidplugin.testit.TestItSettingsConfigurable"
+                             id="com.github.mess9.testitaffectedidplugin.settings.TestItSettingsConfigurable"
+                             displayName="Testit-Get-Id"/>
+
+        <backgroundPostStartupActivity
+                implementation="com.github.mess9.testitaffectedidplugin.startup.TestItProjectStartupActivity"/>
+
     </extensions>
+
+    <actions>
+        <action id="AffectedTestsFinder.FindTests"
+                class="com.github.mess9.testitaffectedidplugin.action.FindAffectedTestsAction"
+                text="Find Affected Tests"
+                description="Find tests affected by changes between current branch and master"
+                icon="AllIcons.Actions.Find">
+            <add-to-group group-id="RunMenu" anchor="last"/>
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+
+
 </idea-plugin>
