@@ -1,0 +1,54 @@
+name: Release Plugin
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build Plugin
+        run: ./gradlew buildPlugin
+
+      # Получаем дату и короткий hash коммита для tag/release name
+      - name: Generate tag name
+        id: tagger
+        run: |
+          DATE=$(date +"%Y%m%d-%H%M")
+          SHORT_SHA=$(git rev-parse --short ${{ github.sha }})
+          TAG="auto-main-${DATE}-${SHORT_SHA}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      # Создаём tag в репозитории (если он ещё не создан)
+      - name: Create tag
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions"
+          git tag ${{ steps.tagger.outputs.tag }}
+          git push origin ${{ steps.tagger.outputs.tag }}
+
+      # Создаём релиз и прикрепляем архив
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tagger.outputs.tag }}
+          name: ${{ steps.tagger.outputs.tag }}
+          body: "Автоматический релиз для коммита ${{ github.sha }}"
+          draft: false
+          prerelease: true  # Если хотите, чтобы это были pre-release
+          files: build/distributions/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
