@@ -8,6 +8,9 @@ on:
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v4
 
@@ -38,7 +41,10 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions"
           git tag ${{ steps.tagger.outputs.tag }}
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin ${{ steps.tagger.outputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Создаём релиз и прикрепляем архив
       - name: Create GitHub Release
