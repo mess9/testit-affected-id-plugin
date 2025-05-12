@@ -10,9 +10,6 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.intellij.util.xmlb.XmlSerializerUtil;
-import lombok.Getter;
-import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileInputStream;
@@ -22,23 +19,29 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-@Setter
-@Getter
 @Service(Service.Level.PROJECT)
 @State(
 		name = "TestItSettings",
 		storages = {@Storage("testItSettings.xml")}
 )
-public final class TestItSettings implements PersistentStateComponent<TestItSettings> {
+public final class TestItSettings implements PersistentStateComponent<TestItSettings.State> {
 
 	private static final Logger LOG = Logger.getInstance(TestItSettings.class);
 
 	private static final String CREDENTIAL_ATTRIBUTE_USER = "TestIt API Token";
-	private String url = "";
-	private String projectId = "";
-	private String projectUrlId = "";
 
+	private State state = new State();
+	// Служебное поле (не сериализуется)
 	private transient Project project;
+
+	public TestItSettings() {
+	}
+
+	@Override
+	public @NotNull State getState() {
+		return state;
+	}
+
 
 	// Метод для инициализации сервиса проектом
 	public void initProjectContext(Project project) {
@@ -51,13 +54,11 @@ public final class TestItSettings implements PersistentStateComponent<TestItSett
 		Credentials credentials = PasswordSafe.getInstance().get(attributes);
 		return credentials != null ? credentials.getPasswordAsString() : "";
 	}
-
 	public void setPrivateToken(String token) {
 		CredentialAttributes attributes = createCredentialAttributes();
 		Credentials credentials = new Credentials(attributes.getUserName(), token);
 		PasswordSafe.getInstance().set(attributes, credentials);
 	}
-
 	private CredentialAttributes createCredentialAttributes() {
 		return new CredentialAttributes(
 				CredentialAttributesKt.generateServiceName("TestItPlugin", CREDENTIAL_ATTRIBUTE_USER)
@@ -65,14 +66,9 @@ public final class TestItSettings implements PersistentStateComponent<TestItSett
 	}
 
 	@Override
-	public @NotNull TestItSettings getState() {
-		return this;
-	}
-
-	@Override
-	public void loadState(@NotNull TestItSettings state) {
-		XmlSerializerUtil.copyBean(state, this);
-		LOG.info("TestItSettings loaded from XML: URL='" + this.url + "', ProjectID='" + this.projectId + "'");
+	public void loadState(@NotNull State state) {
+		this.state = state;
+		LOG.info("TestItSettings loaded from XML: URL='" + this.state.url + "', ProjectID='" + this.state.projectId + "'");
 	}
 
 	public void loadFromPropertiesFile() {
@@ -96,20 +92,59 @@ public final class TestItSettings implements PersistentStateComponent<TestItSett
 			String filePrivateToken = properties.getProperty("privateToken");
 
 			if (fileUrl != null) {
-				this.url = fileUrl;
+				this.state.url = fileUrl;
 			}
 			if (fileProjectId != null) {
-				this.projectId = fileProjectId;
+				this.state.projectId = fileProjectId;
 			}
 			if (filePrivateToken != null) {
 				setPrivateToken(filePrivateToken);
 			}
-			LOG.info("TestItSettings loaded/overridden from testit.properties: URL='" + this.url + "', ProjectID='" + this.projectId + "'");
+			LOG.info("TestItSettings loaded/overridden from testit.properties: URL='" + this.state.url + "', ProjectID='" + this.state.projectId + "'");
 
 		} catch (IOException e) {
 			LOG.warn("Could not load testit.properties file: " + e.getMessage() + ". Using settings from XML or defaults.");
 		}
 	}
 
+	public String getUrl() {
+		return state.url;
+	}
+
+	public void setUrl(String url) {
+		this.state.url = url;
+	}
+
+	public String getProjectId() {
+		return state.projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.state.projectId = projectId;
+	}
+
+	public String getProjectUrlId() {
+		return state.projectUrlId;
+	}
+
+	public void setProjectUrlId(String projectUrlId) {
+		this.state.projectUrlId = projectUrlId;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	// сериализуемое состояние — во внутреннем классе!
+	public static class State {
+
+		public String url = "";
+		public String projectId = "";
+		public String projectUrlId = "";
+	}
 
 }

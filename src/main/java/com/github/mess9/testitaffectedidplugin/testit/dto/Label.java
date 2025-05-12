@@ -14,29 +14,19 @@
 package com.github.mess9.testitaffectedidplugin.testit.dto;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.Getter;
 
 import java.util.Objects;
 
-/**
- * Label
- */
-@Getter
+
 @SuppressWarnings("unused")
 public class Label {
 
 	public static final String SERIALIZED_NAME_NAME = "name";
 	public static final String SERIALIZED_NAME_GLOBAL_ID = "globalId";
-	/**
-	 * -- GETTER --
-	 * Name of the label
-	 */
+
 	@SerializedName(SERIALIZED_NAME_NAME)
 	private String name;
-	/**
-	 * -- GETTER --
-	 * Global ID of the label
-	 */
+
 	@SerializedName(SERIALIZED_NAME_GLOBAL_ID)
 	private Long globalId;
 
@@ -87,17 +77,12 @@ public class Label {
 
 	@Override
 	public String toString() {
-		String sb = "class Label {\n" +
+		return "class Label {\n" +
 				"    name: " + toIndentedString(name) + "\n" +
 				"    globalId: " + toIndentedString(globalId) + "\n" +
 				"}";
-		return sb;
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(Object o) {
 		if (o == null) {
 			return "null";
@@ -105,5 +90,12 @@ public class Label {
 		return o.toString().replace("\n", "\n    ");
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public Long getGlobalId() {
+		return globalId;
+	}
 }
 

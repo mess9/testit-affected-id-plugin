@@ -14,14 +14,20 @@ public class TestItProjectStartupActivity implements ProjectActivity {
 	@Nullable
 	@Override
 	public Object execute(@NotNull Project project, @NotNull Continuation<? super Unit> continuation) {
-		// Выполняем чтение файла в фоновом потоке, чтобы не блокировать UI
+		// Получаем сервис в главном потоке — это важно!
+		TestItSettings settings = project.getService(TestItSettings.class);
+
+		// Предотвращаем дальнейшие ошибки, если сервис не инициализирован
+		if (settings == null) {
+			return null;
+		}
+
+		// Выполняем только файловые операции/тяжёлую логику в фоне
 		ApplicationManager.getApplication().executeOnPooledThread(() -> {
-			TestItSettings settings = project.getService(TestItSettings.class);
-			if (settings != null) {
-				settings.initProjectContext(project);
-				settings.loadFromPropertiesFile();
-			}
+			settings.initProjectContext(project);
+			settings.loadFromPropertiesFile();
 		});
 		return null;
 	}
+
 }

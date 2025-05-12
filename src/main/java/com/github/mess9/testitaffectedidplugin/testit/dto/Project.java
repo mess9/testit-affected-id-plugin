@@ -1,13 +1,11 @@
 package com.github.mess9.testitaffectedidplugin.testit.dto;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.Getter;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-@Getter
 @SuppressWarnings("unused")
 public class Project {
 
@@ -25,88 +23,46 @@ public class Project {
 	public static final String SERIALIZED_NAME_CREATED_BY_ID = "createdById";
 	public static final String SERIALIZED_NAME_MODIFIED_BY_ID = "modifiedById";
 	public static final String SERIALIZED_NAME_GLOBAL_ID = "globalId";
-	/**
-	 * -- GETTER --
-	 * Unique ID of the project
-	 */
+
 	@SerializedName(SERIALIZED_NAME_ID)
 	private UUID id;
-	/**
-	 * -- GETTER --
-	 * Description of the project
-	 */
+
 	@SerializedName(SERIALIZED_NAME_DESCRIPTION)
 	private String description;
-	/**
-	 * -- GETTER --
-	 * Name of the project
-	 */
+
 	@SerializedName(SERIALIZED_NAME_NAME)
 	private String name;
-	/**
-	 * -- GETTER --
-	 * Indicates if the project is marked as favorite
-	 */
+
 	@SerializedName(SERIALIZED_NAME_IS_FAVORITE)
 	private Boolean isFavorite;
-	/**
-	 * -- GETTER --
-	 * Number of test cases in the project
-	 */
+
 	@SerializedName(SERIALIZED_NAME_TEST_CASES_COUNT)
 	private Integer testCasesCount;
-	/**
-	 * -- GETTER --
-	 * Number of shared steps in the project
-	 */
+
 	@SerializedName(SERIALIZED_NAME_SHARED_STEPS_COUNT)
 	private Integer sharedStepsCount;
-	/**
-	 * -- GETTER --
-	 * Number of checklists in the project
-	 */
+
 	@SerializedName(SERIALIZED_NAME_CHECK_LISTS_COUNT)
 	private Integer checkListsCount;
-	/**
-	 * -- GETTER --
-	 * Number of autotests in the project
-	 */
+
 	@SerializedName(SERIALIZED_NAME_AUTO_TESTS_COUNT)
 	private Integer autoTestsCount;
-	/**
-	 * -- GETTER --
-	 * Indicates if the project is deleted
-	 */
+
 	@SerializedName(SERIALIZED_NAME_IS_DELETED)
 	private Boolean isDeleted;
-	/**
-	 * -- GETTER --
-	 * Creation date of the project
-	 */
+
 	@SerializedName(SERIALIZED_NAME_CREATED_DATE)
 	private OffsetDateTime createdDate;
-	/**
-	 * -- GETTER --
-	 * Last modification date of the project
-	 */
+
 	@SerializedName(SERIALIZED_NAME_MODIFIED_DATE)
 	private OffsetDateTime modifiedDate;
-	/**
-	 * -- GETTER --
-	 * Unique ID of the project creator
-	 */
+
 	@SerializedName(SERIALIZED_NAME_CREATED_BY_ID)
 	private UUID createdById;
-	/**
-	 * -- GETTER --
-	 * Unique ID of the project last editor
-	 */
+
 	@SerializedName(SERIALIZED_NAME_MODIFIED_BY_ID)
 	private UUID modifiedById;
-	/**
-	 * -- GETTER --
-	 * Global ID of the project
-	 */
+
 	@SerializedName(SERIALIZED_NAME_GLOBAL_ID)
 	private Long globalId;
 
@@ -333,14 +289,75 @@ public class Project {
 				"}";
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
+
 	private String toIndentedString(Object o) {
 		if (o == null) {
 			return "null";
 		}
 		return o.toString().replace("\n", "\n    ");
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Boolean getFavorite() {
+		return isFavorite;
+	}
+
+	public void setFavorite(Boolean favorite) {
+		isFavorite = favorite;
+	}
+
+	public Integer getTestCasesCount() {
+		return testCasesCount;
+	}
+
+	public Integer getSharedStepsCount() {
+		return sharedStepsCount;
+	}
+
+	public Integer getCheckListsCount() {
+		return checkListsCount;
+	}
+
+	public Integer getAutoTestsCount() {
+		return autoTestsCount;
+	}
+
+	public Boolean getDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		isDeleted = deleted;
+	}
+
+	public OffsetDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public OffsetDateTime getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public UUID getCreatedById() {
+		return createdById;
+	}
+
+	public UUID getModifiedById() {
+		return modifiedById;
+	}
+
+	public Long getGlobalId() {
+		return globalId;
 	}
 }

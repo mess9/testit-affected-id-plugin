@@ -36,11 +36,6 @@ dependencies {
 //    git
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.2.0.202503040940-r")
     implementation("com.github.javaparser:javaparser-core:3.26.3")
-//    lombok
-    compileOnly("org.projectlombok:lombok:1.18.38")
-    annotationProcessor("org.projectlombok:lombok:1.18.38")
-    testCompileOnly("org.projectlombok:lombok:1.18.38")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
 //    default
     testImplementation(platform("org.junit:junit-bom:5.12.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")

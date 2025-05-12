@@ -259,15 +259,13 @@ public class AffectedTestsWindow extends SimpleToolWindowPanel {
 
 				CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
 					try {
-						AutotestSearchFilterDto filter = AutotestSearchFilterDto.builder()
-								.projectIds(List.of(settings.getProjectId()))
-								.isDeleted(false)
-								.name(testName)
-								.build();
+						var filter = new AutotestSearchFilterDto();
+						filter.setProjectIds(List.of(settings.getProjectId()));
+						filter.setName(testName);
+						filter.setDeleted(false);
 
-						AutotestSearchDto searchDto = AutotestSearchDto.builder()
-								.filter(filter)
-								.build();
+						var searchDto = new AutotestSearchDto();
+						searchDto.setFilter(filter);
 
 						List<AutoTest> foundTests = client.searchTestCases(searchDto);
 						LOG.debug("Found " + foundTests.size() + " tests for name: " + testName);

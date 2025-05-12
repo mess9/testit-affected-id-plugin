@@ -14,7 +14,6 @@
 package com.github.mess9.testitaffectedidplugin.testit.dto;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.Getter;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -22,7 +21,6 @@ import java.util.UUID;
 /**
  * Link
  */
-@Getter
 @SuppressWarnings("unused")
 public class Link {
 
@@ -34,34 +32,19 @@ public class Link {
 	public static final String SERIALIZED_NAME_HAS_INFO = "hasInfo";
 	@SerializedName(SERIALIZED_NAME_ID)
 	private UUID id;
-	/**
-	 * -- GETTER --
-	 * Link name.
-	 */
+
 	@SerializedName(SERIALIZED_NAME_TITLE)
 	private String title;
-	/**
-	 * -- GETTER --
-	 * Address can be specified without protocol, but necessarily with the domain.
-	 */
+
 	@SerializedName(SERIALIZED_NAME_URL)
 	private String url;
-	/**
-	 * -- GETTER --
-	 * Link description.
-	 */
+
 	@SerializedName(SERIALIZED_NAME_DESCRIPTION)
 	private String description;
-	/**
-	 * -- GETTER --
-	 * Get type
-	 */
+
 	@SerializedName(SERIALIZED_NAME_TYPE)
 	private LinkType type;
-	/**
-	 * -- GETTER --
-	 * Flag defines if link relates to integrated jira service
-	 */
+
 	@SerializedName(SERIALIZED_NAME_HAS_INFO)
 	private Boolean hasInfo;
 
@@ -166,10 +149,6 @@ public class Link {
 				"}";
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(Object o) {
 		if (o == null) {
 			return "null";
@@ -177,5 +156,28 @@ public class Link {
 		return o.toString().replace("\n", "\n    ");
 	}
 
+	public UUID getId() {
+		return id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public LinkType getType() {
+		return type;
+	}
+
+	public Boolean getHasInfo() {
+		return hasInfo;
+	}
 }
 

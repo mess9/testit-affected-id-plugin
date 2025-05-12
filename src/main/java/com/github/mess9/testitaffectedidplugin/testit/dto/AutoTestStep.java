@@ -14,38 +14,24 @@
 package com.github.mess9.testitaffectedidplugin.testit.dto;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * AutoTestStep
- */
-@Getter
 @SuppressWarnings("unused")
 public class AutoTestStep {
 
 	public static final String SERIALIZED_NAME_TITLE = "title";
 	public static final String SERIALIZED_NAME_DESCRIPTION = "description";
 	public static final String SERIALIZED_NAME_STEPS = "steps";
-	/**
-	 * -- GETTER --
-	 * Step name.
-	 */
+
 	@SerializedName(SERIALIZED_NAME_TITLE)
 	private String title;
-	/**
-	 * -- GETTER --
-	 * Detailed step description. It appears when the step is unfolded.
-	 */
+
 	@SerializedName(SERIALIZED_NAME_DESCRIPTION)
 	private String description;
-	/**
-	 * -- GETTER --
-	 * Includes a nested step inside another step. The maximum nesting level is 15.
-	 */
+
 	@SerializedName(SERIALIZED_NAME_STEPS)
 	private List<AutoTestStep> steps;
 
@@ -126,10 +112,7 @@ public class AutoTestStep {
 				"}";
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
+
 	private String toIndentedString(Object o) {
 		if (o == null) {
 			return "null";
@@ -137,6 +120,16 @@ public class AutoTestStep {
 		return o.toString().replace("\n", "\n    ");
 	}
 
+	public String getTitle() {
+		return title;
+	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public List<AutoTestStep> getSteps() {
+		return steps;
+	}
 }
 

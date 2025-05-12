@@ -17,14 +17,10 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import lombok.Getter;
 
 import java.io.IOException;
 
-/**
- * Gets or Sets LinkType
- */
-@Getter
+
 @JsonAdapter(LinkType.Adapter.class)
 public enum LinkType {
 
@@ -72,6 +68,10 @@ public enum LinkType {
 			String value = jsonReader.nextString();
 			return LinkType.fromValue(value);
 		}
+	}
+
+	public String getValue() {
+		return value;
 	}
 }
 
