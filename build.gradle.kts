@@ -34,7 +34,7 @@ repositories {
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
 //    git
-    implementation("org.eclipse.jgit:org.eclipse.jgit:7.2.0.202503040940-r")
+    implementation("org.eclipse.jgit:org.eclipse.jgit:7.2.1.202505142326-r")
     implementation("com.github.javaparser:javaparser-core:3.26.4")
 //    default
     testImplementation(platform("org.junit:junit-bom:5.12.2"))
