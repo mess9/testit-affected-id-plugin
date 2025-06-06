@@ -19,7 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,9 @@ public class FetchTestIdsAction extends AnAction {
 	private final AffectedTestsWindow window;
 
 	public FetchTestIdsAction(AffectedTestsWindow window) {
-		super("Fetch TestIT IDs", "Fetch test IDs from TestIT", AllIcons.Vcs.Fetch);
+		super("Fetch TestIT IDs",
+				"Fetch test IDs from TestIT",
+				AllIcons.Vcs.Fetch);
 		this.window = window;
 	}
 
@@ -73,7 +74,7 @@ public class FetchTestIdsAction extends AnAction {
 			LOG.info("Fetching test IDs with URL: " + settings.getUrl() + ", ProjectID: " + settings.getProjectId());
 
 			TestItClient client = new TestItClient(settings);
-			testIds = new HashMap<>();
+			testIds = window.testIds;
 			List<CompletableFuture<Void>> futures = new ArrayList<>();
 
 			for (AffectedTestsFinderService.TestMethodInfo test : window.currentTests) {
@@ -86,7 +87,6 @@ public class FetchTestIdsAction extends AnAction {
 						filter.setProjectIds(List.of(settings.getProjectId()));
 						filter.setName(testName);
 						filter.setDeleted(false);
-
 						var searchDto = new AutotestSearchDto();
 						searchDto.setFilter(filter);
 

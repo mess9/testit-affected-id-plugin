@@ -57,13 +57,9 @@ public class TestItClient {
 			HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
 			if (response.statusCode() == 200) {
-				System.out.println("DDDDEEEBUG");
-				System.out.println(response.body());
 				Type listType = new TypeToken<List<AutoTest>>() {
 				}.getType();
 				List<AutoTest> autoTests = gson.fromJson(response.body(), listType);
-				System.out.println(autoTests.size() + " test cases found");
-				System.out.println(autoTests);
 				autoTests.stream().map(AutoTest::getProjectId).findAny().ifPresent(p -> extractProjectUrlId(p.toString()));
 				return autoTests;
 			} else {

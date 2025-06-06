@@ -10,7 +10,6 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.components.JBScrollPane;
@@ -30,7 +29,6 @@ import java.util.stream.Collectors;
 
 public class AffectedTestsWindow extends SimpleToolWindowPanel {
 
-	private static final Logger LOG = Logger.getInstance(AffectedTestsWindow.class);
 	public static final int PACKAGE_COLUMN_INDEX = 0;
 	public static final int CLASS_NAME_COLUMN_INDEX = 1;
 	public static final int TEST_NAME_COLUMN_INDEX = 2;
@@ -47,6 +45,7 @@ public class AffectedTestsWindow extends SimpleToolWindowPanel {
 	public final Project project;
 	public List<AffectedTestsFinderService.TestMethodInfo> currentTests = new ArrayList<>();
 	public Map<String, Set<Long>> testIds = new HashMap<>();
+	public final JTable resultsTable;
 
 	// region инициализация
 	public AffectedTestsWindow(Project project) {
@@ -63,7 +62,7 @@ public class AffectedTestsWindow extends SimpleToolWindowPanel {
 		};
 
 		// Настраиваем таблицу
-		JTable resultsTable = new JBTable(tableModel);
+		resultsTable = new JBTable(tableModel);
 
 		resultsTable.getColumnModel().getColumn(PACKAGE_COLUMN_INDEX).setPreferredWidth(50);
 		resultsTable.getColumnModel().getColumn(CLASS_NAME_COLUMN_INDEX).setPreferredWidth(30);
@@ -72,6 +71,9 @@ public class AffectedTestsWindow extends SimpleToolWindowPanel {
 		resultsTable.getColumnModel().getColumn(TEST_ID_COLUMN_INDEX).setPreferredWidth(50);
 		resultsTable.getColumnModel().getColumn(TEST_ID_COLUMN_INDEX).setPreferredWidth(10);
 		resultsTable.getColumnModel().getColumn(TEST_IT_URL_COLUMN_INDEX).setPreferredWidth(100);
+
+		resultsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
 
 		MouseActions mouseActions = new MouseActions();
 		mouseActions.addMouseListenerToTable(resultsTable, project);

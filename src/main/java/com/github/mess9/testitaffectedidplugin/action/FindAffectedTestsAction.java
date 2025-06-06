@@ -26,7 +26,9 @@ public class FindAffectedTestsAction extends AnAction {
 	private final AffectedTestsWindow window;
 
 	public FindAffectedTestsAction(AffectedTestsWindow window) {
-		super("Find Affected Tests", "Find tests affected by changes between current branch and master", AllIcons.Actions.Find);
+		super("Find Affected Tests",
+				"Find tests affected by changes between current branch and master",
+				AllIcons.Actions.Find);
 		this.window = window;
 	}
 
