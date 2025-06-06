@@ -117,10 +117,11 @@ public class AffectedTestsWindow extends SimpleToolWindowPanel {
 			for (AffectedTestsFinderService.TestMethodInfo test : sortedTests) {
 				Object[] row;
 				if (withIds && testIds.containsKey(test.displayName())) {
-					String ids = testIds.get(test.displayName()).stream()
+					Set<Long> idsSet = testIds.get(test.displayName());
+					String ids = idsSet.stream()
 							.map(Object::toString)
 							.collect(Collectors.joining(", "));
-					row = new Object[]{test.packageName(), test.className(), test.displayName(), test.methodName(), ids, getLink(ids, settings)};
+					row = new Object[]{test.packageName(), test.className(), test.displayName(), test.methodName(), ids, getLink(idsSet, settings)};
 				} else {
 					row = new Object[]{test.packageName(), test.className(), test.displayName(), test.methodName(), "", ""};
 				}
@@ -131,7 +132,7 @@ public class AffectedTestsWindow extends SimpleToolWindowPanel {
 
 	// endregion таблица
 
-	private static @NotNull String getLink(String ids, TestItSettings settings) {
-		return !ids.isEmpty() ? settings.getUrl() + "/projects/" + settings.getProjectUrlId() + "/autotests/" + ids : "";
+	private static @NotNull String getLink(Set<Long> ids, TestItSettings settings) {
+		return !ids.isEmpty() ? settings.getUrl() + "/projects/" + settings.getProjectUrlId() + "/autotests/" + ids.iterator().next() : "";
 	}
 }
