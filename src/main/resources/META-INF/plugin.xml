@@ -29,16 +29,4 @@
 
     </extensions>
 
-    <actions>
-        <action id="AffectedTestsFinder.FindTests"
-                class="com.github.mess9.testitaffectedidplugin.action.FindAffectedTestsAction"
-                text="Find Affected Tests"
-                description="Find tests affected by changes between current branch and master"
-                icon="AllIcons.Actions.Find">
-            <add-to-group group-id="RunMenu" anchor="last"/>
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
-        </action>
-    </actions>
-
-
 </idea-plugin>
