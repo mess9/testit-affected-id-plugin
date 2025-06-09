@@ -43,7 +43,7 @@ dependencies {
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.3.0.202506031305-r")
     implementation("com.github.javaparser:javaparser-core:3.26.4")
 //    default
-    testImplementation(platform("org.junit:junit-bom:5.12.2"))
+    testImplementation(platform("org.junit:junit-bom:5.13.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation(libs.opentest4j)
