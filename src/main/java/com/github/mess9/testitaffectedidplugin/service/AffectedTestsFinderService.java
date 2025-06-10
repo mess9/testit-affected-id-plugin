@@ -11,6 +11,7 @@ import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.ui.Messages;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -74,6 +75,7 @@ public class AffectedTestsFinderService {
 					.call();
 			if (diffs.isEmpty()) {
 				log.info("No changes found in test files");
+				Messages.showInfoMessage("No changes found in test files", "Error");
 				return affectedTests;
 			}
 			for (DiffEntry diff : diffs) {
@@ -119,13 +121,14 @@ public class AffectedTestsFinderService {
 
 		List<TestMethodInfo> newTests = checkDeletedTests(oldFileContent, newFileContent, filePath);
 		if (newTests == null) return;
+		log.info("found deleted test in file - " + newTests.size());
 		checkExistTests(repository, diff, newTests, filePath);
 	}
 
 	private boolean skipNoTestClasses(String filePath) {
 		return filePath.endsWith("Suite.java") ||
-				filePath.matches(".*(Base|Abstract).*Test\\.java") ||
-				!filePath.endsWith("Test.java");
+				filePath.matches(".*(Base|Abstract).*Test?\\.java") ||
+				!(filePath.endsWith("Test.java") || filePath.endsWith("Tests.java"));
 	}
 
 	public String getFileContent(Repository repository, ObjectId treeId, String filePath) throws IOException {
@@ -324,6 +327,13 @@ public class AffectedTestsFinderService {
 				log.info(format("Checking DELETE [%d-%d] vs test '%s' [%d-%d]",
 						deleteStart, deleteEnd,
 						test.displayName(), test.startLine(), test.endLine()));
+				if (rangesOverlap(deleteStart, deleteEnd, test.startLine(), test.endLine())) {
+					log.info(format(">>> Affected test (DELETED): %s (method: %s) " +
+									"because its new range [%d-%d] overlaps with %s edit's new file impact [%d-%d]",
+							test.displayName(), test.methodName(), test.startLine(), test.endLine(),
+							edit.getType(), deleteStart, deleteEnd));
+					return true;
+				}
 			}
 			// Для INSERT проверяем новые тесты
 			else if (edit.getType() == Edit.Type.INSERT) {
@@ -364,7 +374,8 @@ public class AffectedTestsFinderService {
 
 	private boolean isTestMethod(MethodDeclaration method) {
 		return method.getAnnotations().stream()
-				.anyMatch(a -> a.getNameAsString().equals("ParameterizedTest"));
+				.anyMatch(a -> (a.getNameAsString().equals("ParameterizedTest"))
+						|| (a.getNameAsString().equals("Test")));
 	}
 
 	private String getPackageName(MethodDeclaration method) {

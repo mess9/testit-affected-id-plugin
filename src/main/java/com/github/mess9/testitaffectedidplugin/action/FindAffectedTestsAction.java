@@ -21,7 +21,7 @@ import java.util.List;
 
 public class FindAffectedTestsAction extends AnAction {
 
-	private static final Logger LOG = Logger.getInstance(FindAffectedTestsAction.class);
+	private static final Logger log = Logger.getInstance(FindAffectedTestsAction.class);
 
 	private final AffectedTestsWindow window;
 
@@ -34,26 +34,38 @@ public class FindAffectedTestsAction extends AnAction {
 
 	@Override
 	public void actionPerformed(@NotNull AnActionEvent e) {
+		if (window != null) {
+			findAffectedTests(window);
+		} else {
+			log.warn("FetchTestIdsAction: AffectedTestsWindow instance is null.");
+			if (e.getProject() != null) {
+				Messages.showErrorDialog(e.getProject(), "Cannot perform action: Plugin window not available.", "Error");
+			}
+		}
+	}
+
+	private void findAffectedTests(AffectedTestsWindow window) {
 		Project project = window.project;
 		VirtualFile baseDir = ProjectUtil.guessProjectDir(project);
-		if (baseDir == null) return;
+
+		if (baseDir == null) {
+			return;
+		}
 
 		File projectDir = new File(baseDir.getPath());
 		AffectedTestsFinderService service = new AffectedTestsFinderService();
-
-		LOG.info("Начинаем поиск затронутых тестов");
-		LOG.debug("Анализируем директорию: " + projectDir.getAbsolutePath());
 
 		ProgressManager.getInstance().run(new Task.Backgroundable(project, "Finding affected tests") {
 			@Override
 			public void run(@NotNull ProgressIndicator indicator) {
 				try {
 					List<AffectedTestsFinderService.TestMethodInfo> affectedTests = service.findAffectedTests(projectDir);
+					log.info("found affected tests - " + affectedTests.size());
 
-					window.setTestResults(affectedTests);
+					ApplicationManager.getApplication().invokeLater(() -> window.setTestResults(affectedTests));
 
 				} catch (Exception ex) {
-					LOG.error("Error finding affected tests", ex);
+					log.error("Error finding affected tests", ex);
 					ApplicationManager.getApplication().invokeLater(() -> Messages.showErrorDialog(
 							project,
 							"Error finding affected tests: " + ex.getMessage(),
