@@ -48,7 +48,7 @@ jobs:
 
       # Создаём релиз и прикрепляем архив
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2.0.4
+        uses: softprops/action-gh-release@v2.3.0
         with:
           tag_name: ${{ steps.tagger.outputs.tag }}
           name: ${{ steps.tagger.outputs.tag }}
