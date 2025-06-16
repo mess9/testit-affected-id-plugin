@@ -41,7 +41,7 @@ repositories {
 dependencies {
 //    git
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.3.0.202506031305-r")
-    implementation("com.github.javaparser:javaparser-core:3.26.4")
+    implementation("com.github.javaparser:javaparser-core:3.27.0")
 //    default
     testImplementation(platform("org.junit:junit-bom:5.13.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
