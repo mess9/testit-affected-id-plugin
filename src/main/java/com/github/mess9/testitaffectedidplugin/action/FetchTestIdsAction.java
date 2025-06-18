@@ -79,23 +79,24 @@ public class FetchTestIdsAction extends AnAction {
 
 			for (AffectedTestsFinderService.TestMethodInfo test : window.currentTests) {
 				String testName = test.displayName();
+				String testNameForRequest = testName.replace("\\", "");
 				testIds.put(testName, new HashSet<>());
 
 				CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
 					try {
 						var filter = new AutotestSearchFilterDto();
 						filter.setProjectIds(List.of(settings.getProjectId()));
-						filter.setName(testName);
+						filter.setName(testNameForRequest);
 						filter.setDeleted(false);
 						var searchDto = new AutotestSearchDto();
 						searchDto.setFilter(filter);
 
 						List<AutoTest> foundTests = client.searchTestCases(searchDto);
-						LOG.debug("Found " + foundTests.size() + " tests for name: " + testName);
+						LOG.info("Found " + foundTests.size() + " tests for name: " + testName);
 
 						for (AutoTest foundTest : foundTests) {
-							if (foundTest.getName().equals(testName)) {
-								LOG.debug("Adding test ID: " + foundTest.getGlobalId() + " for test: " + testName);
+							if (foundTest.getName().equals(testNameForRequest)) {
+								LOG.info("Adding test ID: " + foundTest.getGlobalId() + " for test: " + testName);
 								testIds.get(testName).add(foundTest.getGlobalId());
 							}
 						}
@@ -103,7 +104,6 @@ public class FetchTestIdsAction extends AnAction {
 						LOG.error("Error searching for test: " + testName, e);
 					}
 				});
-
 				futures.add(future);
 			}
 
