@@ -23,6 +23,8 @@ public class FindAffectedTestsAction extends AnAction {
 
 	private static final Logger log = Logger.getInstance(FindAffectedTestsAction.class);
 
+	private final AffectedTestsFinderService testsFinderService = new AffectedTestsFinderService();
+
 	private final AffectedTestsWindow window;
 
 	public FindAffectedTestsAction(AffectedTestsWindow window) {
@@ -53,13 +55,12 @@ public class FindAffectedTestsAction extends AnAction {
 		}
 
 		File projectDir = new File(baseDir.getPath());
-		AffectedTestsFinderService service = new AffectedTestsFinderService();
 
 		ProgressManager.getInstance().run(new Task.Backgroundable(project, "Finding affected tests") {
 			@Override
 			public void run(@NotNull ProgressIndicator indicator) {
 				try {
-					List<AffectedTestsFinderService.TestMethodInfo> affectedTests = service.findAffectedTests(projectDir);
+					List<AffectedTestsFinderService.TestMethodInfo> affectedTests = testsFinderService.findAffectedTests(projectDir);
 					log.info("found affected tests - " + affectedTests.size());
 
 					ApplicationManager.getApplication().invokeLater(() -> window.setTestResults(affectedTests));

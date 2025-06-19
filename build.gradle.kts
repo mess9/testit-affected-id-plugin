@@ -42,19 +42,17 @@ dependencies {
 //    git
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.3.0.202506031305-r")
     implementation("com.github.javaparser:javaparser-core:3.27.0")
-//    default
+//    test
     testImplementation(platform("org.junit:junit-bom:5.13.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation(libs.opentest4j)
-//    other
-    implementation("com.google.code.gson:gson:2.13.1")
-    implementation("org.slf4j:slf4j-simple:2.0.17")
     testImplementation("org.mockito:mockito-core:5.18.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.18.0")
     testImplementation("org.assertj:assertj-core:3.27.3")
-//    rest assured
-//    implementation("io.rest-assured:rest-assured:5.5.1")
+//    other
+    implementation("com.google.code.gson:gson:2.13.1")
+    implementation("org.slf4j:slf4j-simple:2.0.17")
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
         create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))

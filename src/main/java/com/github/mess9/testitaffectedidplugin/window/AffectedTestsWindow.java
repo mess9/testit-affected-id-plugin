@@ -1,8 +1,10 @@
 package com.github.mess9.testitaffectedidplugin.window;
 
 import com.github.mess9.testitaffectedidplugin.action.CopyIdsAction;
+import com.github.mess9.testitaffectedidplugin.action.DeleteGhostTestItTestsAction;
 import com.github.mess9.testitaffectedidplugin.action.FetchTestIdsAction;
 import com.github.mess9.testitaffectedidplugin.action.FindAffectedTestsAction;
+import com.github.mess9.testitaffectedidplugin.action.FindGhostTestItAction;
 import com.github.mess9.testitaffectedidplugin.action.MouseActions;
 import com.github.mess9.testitaffectedidplugin.service.AffectedTestsFinderService;
 import com.github.mess9.testitaffectedidplugin.testit.TestItSettings;
@@ -78,11 +80,13 @@ public class AffectedTestsWindow extends SimpleToolWindowPanel {
 		MouseActions mouseActions = new MouseActions();
 		mouseActions.addMouseListenerToTable(resultsTable, project);
 
-		// Добавляем кнопки управления
+		// кнопки
 		DefaultActionGroup actionGroup = new DefaultActionGroup();
 		actionGroup.add(new FindAffectedTestsAction(this));
 		actionGroup.add(new FetchTestIdsAction(this));
 		actionGroup.add(new CopyIdsAction(this));
+		actionGroup.add(new FindGhostTestItAction(this));
+		actionGroup.add(new DeleteGhostTestItTestsAction(this));
 
 		ActionToolbar toolbar = ActionManager.getInstance().createActionToolbar(
 				"AffectedTestsToolbar", actionGroup, true);
@@ -103,6 +107,11 @@ public class AffectedTestsWindow extends SimpleToolWindowPanel {
 	public void setTestResults(List<AffectedTestsFinderService.TestMethodInfo> tests) {
 		this.currentTests = new ArrayList<>(tests);
 		updateTable(false);
+	}
+
+	public void setTestResultsWithIds(List<AffectedTestsFinderService.TestMethodInfo> tests) {
+		this.currentTests = new ArrayList<>(tests);
+		updateTable(true);
 	}
 
 	public void updateTable(boolean withIds) {

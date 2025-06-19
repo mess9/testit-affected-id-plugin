@@ -46,7 +46,6 @@ import static java.lang.String.format;
 public class AffectedTestsFinderService {
 
 	private static final Logger log = Logger.getInstance(AffectedTestsFinderService.class);
-	private static final String TEST_PATH = "src/test/java";
 	private static final JavaParser JAVA_PARSER = new JavaParser(new ParserConfiguration()
 			.setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_21));
 
@@ -71,7 +70,7 @@ public class AffectedTestsFinderService {
 			List<DiffEntry> diffs = git.diff()
 					.setOldTree(prepareTreeParser(repository, masterTree))
 					.setNewTree(prepareTreeParser(repository, headTree))
-					.setPathFilter(PathFilter.create(TEST_PATH))
+					.setPathFilter(PathFilter.create(TestPath.JAVA_TEST_PATH.getTestPath()))
 					.call();
 			if (diffs.isEmpty()) {
 				log.info("No changes found in test files");
@@ -374,8 +373,8 @@ public class AffectedTestsFinderService {
 
 	private boolean isTestMethod(MethodDeclaration method) {
 		return method.getAnnotations().stream()
-				.anyMatch(a -> (a.getNameAsString().equals("ParameterizedTest"))
-						|| (a.getNameAsString().equals("Test")));
+				.anyMatch(a -> (a.getNameAsString().equals(TestAnnotation.JUNIT_PARAMETRIZED_TEST.getAnnotationName()))
+						|| (a.getNameAsString().equals(TestAnnotation.JUNIT_TEST.getAnnotationName())));
 	}
 
 	private String getPackageName(MethodDeclaration method) {
