@@ -49,7 +49,7 @@ dependencies {
     testImplementation(libs.opentest4j)
     testImplementation("org.mockito:mockito-core:5.18.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.18.0")
-    testImplementation("org.assertj:assertj-core:3.27.3")
+    testImplementation("org.assertj:assertj-core:3.27.4")
 //    other
     implementation("com.google.code.gson:gson:2.13.1")
     implementation("org.slf4j:slf4j-simple:2.0.17")
