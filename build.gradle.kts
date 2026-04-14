@@ -51,7 +51,7 @@ dependencies {
     testImplementation("org.mockito:mockito-junit-jupiter:5.19.0")
     testImplementation("org.assertj:assertj-core:3.27.4")
 //    other
-    implementation("com.google.code.gson:gson:2.13.1")
+    implementation("com.google.code.gson:gson:2.13.2")
     implementation("org.slf4j:slf4j-simple:2.0.17")
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
